@@ -304,6 +304,20 @@
             box-shadow: 0 6px 20px rgba(66, 165, 245, 0.6);
         }
 
+        /* Fix mobile touch states */
+        @media (max-width: 768px) {
+            .no-btn:active,
+            .no-btn:focus {
+                background: linear-gradient(45deg, #42a5f5, #66bb6a) !important;
+                transform: none !important;
+                outline: none !important;
+            }
+            
+            .no-btn:hover {
+                background: linear-gradient(45deg, #42a5f5, #66bb6a) !important;
+            }
+        }
+
         .celebration {
             display: none;
             text-align: center;
@@ -659,7 +673,7 @@
             <h1 class="question">Do you love me?</h1>
             <div class="buttons">
                 <button class="btn yes-btn" onclick="handleYes()">Yes! 💖</button>
-                <button class="btn no-btn" id="noBtn" onmouseover="moveNoButton()">No</button>
+                <button class="btn no-btn" id="noBtn" ontouchstart="moveNoButton()" onmouseover="moveNoButton()">No</button>
             </div>
         </div>
 
@@ -717,6 +731,9 @@
         function moveNoButton() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.querySelector('.yes-btn');
+            
+            // Clear any stuck mobile states
+            noBtn.blur();
             
             // Button size - use actual computed sizes on mobile
             const isMobile = window.innerWidth <= 768;
