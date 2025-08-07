@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Do you love me? 💕</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             margin: 0;
@@ -14,6 +15,48 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+        }
+
+        /* Floating hearts background */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 64, 129, 0.6);
+            font-size: 2rem;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .heart:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .heart:nth-child(2) { left: 20%; animation-delay: 1s; }
+        .heart:nth-child(3) { left: 30%; animation-delay: 2s; }
+        .heart:nth-child(4) { left: 40%; animation-delay: 3s; }
+        .heart:nth-child(5) { left: 50%; animation-delay: 4s; }
+        .heart:nth-child(6) { left: 60%; animation-delay: 5s; }
+        .heart:nth-child(7) { left: 70%; animation-delay: 0.5s; }
+        .heart:nth-child(8) { left: 80%; animation-delay: 1.5s; }
+        .heart:nth-child(9) { left: 90%; animation-delay: 2.5s; }
+
+        @keyframes float {
+            0% { 
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         .container {
@@ -24,6 +67,47 @@
             text-align: center;
             max-width: 500px;
             width: 100%;
+            position: relative;
+            z-index: 10;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, #ff4081, #ff6ec7, #42a5f5, #66bb6a);
+            border-radius: 23px;
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes borderGlow {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        /* Sparkles around container */
+        .sparkle {
+            position: absolute;
+            color: #ffd700;
+            font-size: 1.5rem;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { 
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.2);
+            }
         }
 
         .question {
@@ -31,12 +115,62 @@
             color: #ff4081;
             margin-bottom: 40px;
             font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(255, 64, 129, 0.3);
+            position: relative;
+        }
+
+        .question::before,
+        .question::after {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            font-size: 1.5rem;
+            animation: twinkle 1.5s infinite alternate;
+        }
+
+        .question::before {
+            left: -40px;
+            animation-delay: 0s;
+        }
+
+        .question::after {
+            right: -40px;
+            animation-delay: 0.7s;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
         }
 
         .emoji {
             font-size: 4rem;
             margin-bottom: 30px;
             animation: bounce 2s infinite;
+            position: relative;
+        }
+
+        .emoji::before {
+            content: '💫';
+            position: absolute;
+            top: -20px;
+            left: -30px;
+            font-size: 1.5rem;
+            animation: orbit 3s linear infinite;
+        }
+
+        .emoji::after {
+            content: '🌟';
+            position: absolute;
+            top: -20px;
+            right: -30px;
+            font-size: 1.5rem;
+            animation: orbit 3s linear infinite reverse;
+        }
+
+        @keyframes orbit {
+            0% { transform: rotate(0deg) translateX(30px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
         }
 
         @keyframes bounce {
@@ -61,38 +195,99 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .yes-btn {
             background: linear-gradient(45deg, #ff4081, #ff6ec7);
             color: white;
             transform: scale(1);
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
         }
 
         .yes-btn:hover {
             transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 64, 129, 0.6);
         }
 
         .no-btn {
             background: linear-gradient(45deg, #42a5f5, #66bb6a);
             color: white;
             position: relative;
+            box-shadow: 0 4px 15px rgba(66, 165, 245, 0.4);
+        }
+
+        .no-btn:hover {
+            box-shadow: 0 6px 20px rgba(66, 165, 245, 0.6);
         }
 
         .celebration {
             display: none;
             text-align: center;
+            position: relative;
+        }
+
+        .celebration::before {
+            content: '🎊🎉🎊🎉🎊';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            animation: confetti 2s ease-in-out infinite;
+        }
+
+        @keyframes confetti {
+            0%, 100% { transform: translateX(-50%) translateY(0px); }
+            50% { transform: translateX(-50%) translateY(-10px); }
         }
 
         .celebration h2 {
             font-size: 3rem;
             color: #ff4081;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(255, 64, 129, 0.3);
         }
 
         .celebration .hearts {
             font-size: 4rem;
             animation: heartbeat 1s infinite;
+            position: relative;
+        }
+
+        .celebration .hearts::before {
+            content: '✨💖✨💖✨';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            animation: sparkleRain 1.5s infinite;
+        }
+
+        @keyframes sparkleRain {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+            50% { opacity: 1; transform: translateX(-50%) translateY(0px); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(10px); }
         }
 
         @keyframes heartbeat {
@@ -103,7 +298,28 @@
     </style>
 </head>
 <body>
+    <!-- Floating hearts background -->
+    <div class="floating-hearts">
+        <div class="heart">💖</div>
+        <div class="heart">💕</div>
+        <div class="heart">💗</div>
+        <div class="heart">💖</div>
+        <div class="heart">💕</div>
+        <div class="heart">💗</div>
+        <div class="heart">💖</div>
+        <div class="heart">💕</div>
+        <div class="heart">💗</div>
+    </div>
+
     <div class="container">
+        <!-- Sparkles around container -->
+        <div class="sparkle" style="top: 10px; left: 20px; animation-delay: 0s;">✨</div>
+        <div class="sparkle" style="top: 30px; right: 30px; animation-delay: 0.5s;">⭐</div>
+        <div class="sparkle" style="bottom: 40px; left: 40px; animation-delay: 1s;">✨</div>
+        <div class="sparkle" style="bottom: 20px; right: 20px; animation-delay: 1.5s;">⭐</div>
+        <div class="sparkle" style="top: 50%; left: 10px; animation-delay: 2s;">💫</div>
+        <div class="sparkle" style="top: 50%; right: 10px; animation-delay: 2.5s;">🌟</div>
+
         <div id="main-content">
             <div class="emoji">💕</div>
             <h1 class="question">Do you love me?</h1>
@@ -127,31 +343,22 @@
 
         function moveNoButton() {
             const noBtn = document.getElementById('noBtn');
-            const container = document.querySelector('.container');
-            
-            // Get container boundaries
-            const containerRect = container.getBoundingClientRect();
+            const yesBtn = document.querySelector('.yes-btn');
             
             // Button size
-            const btnWidth = 100;
-            const btnHeight = 50;
+            const btnWidth = 120;
+            const btnHeight = 60;
             
-            // Safe area around the container
+            // Much larger bounding box - moves around most of the screen
             const margin = 50;
-            const minX = containerRect.left - margin;
-            const maxX = containerRect.right + margin - btnWidth;
-            const minY = containerRect.top - margin;
-            const maxY = containerRect.bottom + margin - btnHeight;
+            const minX = margin;
+            const maxX = window.innerWidth - btnWidth - margin;
+            const minY = margin;
+            const maxY = window.innerHeight - btnHeight - margin;
             
-            // Make sure it stays on screen
-            const safeMinX = Math.max(20, minX);
-            const safeMaxX = Math.min(window.innerWidth - btnWidth - 20, maxX);
-            const safeMinY = Math.max(20, minY);
-            const safeMaxY = Math.min(window.innerHeight - btnHeight - 20, maxY);
-            
-            // Random position
-            const randomX = safeMinX + Math.random() * (safeMaxX - safeMinX);
-            const randomY = safeMinY + Math.random() * (safeMaxY - safeMinY);
+            // Random position anywhere on screen
+            const randomX = minX + Math.random() * (maxX - minX);
+            const randomY = minY + Math.random() * (maxY - minY);
             
             // Apply position
             noBtn.style.position = 'fixed';
@@ -159,17 +366,32 @@
             noBtn.style.top = randomY + 'px';
             noBtn.style.zIndex = '1000';
             
-            // Change text
+            // Make Yes button bigger each time
+            yesButtonScale += 0.1;
+            yesBtn.style.transform = `scale(${yesButtonScale})`;
+            
+            // Change text with more variety
             const messages = [
                 "No? 🥺",
                 "Are you sure? 😢",
-                "Please? 🥹",
+                "Please? 🥹", 
                 "Think again! 💔",
-                "Really? 😭"
+                "Really? 😭",
+                "Don't be mean! 😿",
+                "Come on! 🥲",
+                "Pretty please? 🙏",
+                "Last chance! ⚠️",
+                "You're breaking my heart! 💔",
+                "Seriously? 😤",
+                "Just say yes! 💕"
             ];
             
             if (clickCount < messages.length) {
                 noBtn.textContent = messages[clickCount];
+                clickCount++;
+            } else {
+                // Cycle through messages if they keep hovering
+                noBtn.textContent = messages[clickCount % messages.length];
                 clickCount++;
             }
         }
@@ -184,8 +406,14 @@
             yesButtonScale = 1;
             
             const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.querySelector('.yes-btn');
+            
+            // Reset No button
             noBtn.style.position = 'static';
             noBtn.textContent = 'No';
+            
+            // Reset Yes button size
+            yesBtn.style.transform = 'scale(1)';
             
             document.getElementById('main-content').style.display = 'block';
             document.getElementById('celebration').style.display = 'none';
