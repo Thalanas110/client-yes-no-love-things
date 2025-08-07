@@ -244,6 +244,19 @@
             display: none;
             text-align: center;
             position: relative;
+            background: linear-gradient(135deg, #ff6b9d, #ff9a85, #ffb347, #87ceeb);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .celebration::before {
@@ -256,22 +269,108 @@
             animation: confetti 2s ease-in-out infinite;
         }
 
+        .celebration::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="20" font-size="20">🎆</text></svg>') repeat;
+            opacity: 0.1;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .fireworks {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: fireworkExplode 1.5s ease-out infinite;
+        }
+
+        @keyframes fireworkExplode {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+
+        .love-meter {
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .love-bar {
+            height: 20px;
+            background: linear-gradient(90deg, #ff4081, #ff6ec7, #42a5f5, #66bb6a);
+            border-radius: 15px;
+            animation: fillLove 3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .love-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes fillLove {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
         @keyframes confetti {
             0%, 100% { transform: translateX(-50%) translateY(0px); }
             50% { transform: translateX(-50%) translateY(-10px); }
         }
 
         .celebration h2 {
-            font-size: 3rem;
-            color: #ff4081;
+            font-size: 4rem;
+            color: white;
             margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(255, 64, 129, 0.3);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            animation: bounce 1s infinite alternate;
+            font-weight: bold;
         }
 
         .celebration .hearts {
-            font-size: 4rem;
+            font-size: 5rem;
             animation: heartbeat 1s infinite;
             position: relative;
+            margin: 20px 0;
         }
 
         .celebration .hearts::before {
@@ -284,6 +383,81 @@
             animation: sparkleRain 1.5s infinite;
         }
 
+        .celebration p {
+            font-size: 1.8rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .love-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 5px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .celebration-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-share {
+            background: linear-gradient(45deg, #ff4081, #ff6ec7);
+        }
+
+        .btn-again {
+            background: linear-gradient(45deg, #42a5f5, #66bb6a);
+        }
+
+        .btn-surprise {
+            background: linear-gradient(45deg, #ffd700, #ff8c00);
+        }
+
+        .celebration-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
         @keyframes sparkleRain {
             0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
             50% { opacity: 1; transform: translateX(-50%) translateY(0px); }
@@ -294,6 +468,27 @@
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
+        }
+
+        @keyframes heartExplosion {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5) rotate(180deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
     </style>
 </head>
@@ -330,10 +525,42 @@
         </div>
 
         <div id="celebration" class="celebration">
+            <div class="fireworks">
+                <div class="firework" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+                <div class="firework" style="top: 30%; left: 80%; animation-delay: 0.5s;"></div>
+                <div class="firework" style="top: 60%; left: 20%; animation-delay: 1s;"></div>
+                <div class="firework" style="top: 70%; left: 70%; animation-delay: 1.5s;"></div>
+                <div class="firework" style="top: 40%; left: 90%; animation-delay: 2s;"></div>
+                <div class="firework" style="top: 80%; left: 15%; animation-delay: 2.5s;"></div>
+            </div>
+            
             <h2>Yay! 🎉</h2>
             <div class="hearts">💖💖💖</div>
+            
+            <div class="love-meter">
+                <p style="margin: 5px 0; color: white; font-weight: bold;">Love Level</p>
+                <div class="love-bar"></div>
+                <p style="margin: 5px 0; color: white; font-size: 0.9rem;">100% MAXIMUM LOVE! 💕</p>
+            </div>
+            
             <p>I love you too! 💕</p>
-            <button class="btn yes-btn" onclick="resetGame()" style="margin-top: 20px;">Play Again</button>
+            
+            <div class="love-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="attempts">0</div>
+                    <div class="stat-label">Times "No" was attempted</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Love multiplier</div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="celebration-btn btn-share" onclick="shareLove()">Share Love 💌</button>
+                <button class="celebration-btn btn-again" onclick="resetGame()">Play Again 🔄</button>
+                <button class="celebration-btn btn-surprise" onclick="surprise()">Surprise Me! ✨</button>
+            </div>
         </div>
     </div>
 
@@ -397,8 +624,79 @@
         }
 
         function handleYes() {
+            // Update attempts counter
+            document.getElementById('attempts').textContent = clickCount;
+            
             document.getElementById('main-content').style.display = 'none';
             document.getElementById('celebration').style.display = 'block';
+            
+            // Add some celebration effects
+            setTimeout(() => {
+                createHeartExplosion();
+            }, 500);
+        }
+
+        function createHeartExplosion() {
+            const container = document.querySelector('.container');
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.textContent = '💖';
+                heart.style.position = 'absolute';
+                heart.style.fontSize = '2rem';
+                heart.style.pointerEvents = 'none';
+                heart.style.zIndex = '9999';
+                heart.style.left = Math.random() * window.innerWidth + 'px';
+                heart.style.top = Math.random() * window.innerHeight + 'px';
+                heart.style.animation = `heartExplosion 3s ease-out forwards`;
+                
+                document.body.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 3000);
+            }
+        }
+
+        function shareLove() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Love Question Game',
+                    text: `I just got someone to say they love me ${clickCount} times! 💕`,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const text = `I just got someone to say they love me ${clickCount} times! 💕 ${window.location.href}`;
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Love message copied to clipboard! 💕');
+                });
+            }
+        }
+
+        function surprise() {
+            const surprises = [
+                () => {
+                    document.body.style.animation = 'shake 0.5s ease-in-out 3';
+                    setTimeout(() => { document.body.style.animation = ''; }, 1500);
+                },
+                () => {
+                    const originalBg = document.body.style.background;
+                    document.body.style.background = 'linear-gradient(45deg, #ff0080, #00ff80, #8000ff, #ff8000)';
+                    document.body.style.backgroundSize = '400% 400%';
+                    document.body.style.animation = 'gradientShift 0.5s ease infinite';
+                    setTimeout(() => {
+                        document.body.style.background = originalBg;
+                        document.body.style.animation = '';
+                    }, 3000);
+                },
+                () => {
+                    createHeartExplosion();
+                    createHeartExplosion();
+                }
+            ];
+            
+            const randomSurprise = surprises[Math.floor(Math.random() * surprises.length)];
+            randomSurprise();
         }
 
         function resetGame() {
