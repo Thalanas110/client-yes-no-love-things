@@ -379,47 +379,67 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="20" font-size="20">🎆</text></svg>') repeat;
-            opacity: 0.1;
-            animation: float 4s ease-in-out infinite;
+            background: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 2px, transparent 2px),
+                        radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.4) 1px, transparent 1px),
+                        radial-gradient(circle at 40% 70%, rgba(255, 105, 180, 0.3) 1px, transparent 1px),
+                        radial-gradient(circle at 90% 80%, rgba(173, 216, 230, 0.4) 2px, transparent 2px),
+                        radial-gradient(circle at 10% 90%, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+            background-size: 150px 150px, 200px 200px, 180px 180px, 220px 220px, 160px 160px;
+            animation: sparkleMove 4s ease-in-out infinite;
+            pointer-events: none;
         }
 
-        .fireworks {
+        @keyframes sparkleMove {
+            0%, 100% { 
+                background-position: 0px 0px, 50px 50px, 100px 100px, 150px 150px, 200px 200px;
+                opacity: 0.6;
+            }
+            50% { 
+                background-position: 100px 50px, 150px 100px, 50px 150px, 200px 100px, 100px 200px;
+                opacity: 1;
+            }
+        }
+
+        .celebration-sparkles {
             position: absolute;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
             pointer-events: none;
+            overflow: hidden;
         }
 
-        @media (max-width: 768px) {
-            .fireworks {
-                display: none; /* Hide fireworks on mobile to fix scrolling */
-            }
-        }
-
-        .firework {
+        .floating-sparkle {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #ffd700;
-            border-radius: 50%;
-            animation: fireworkExplode 1.5s ease-out infinite;
+            font-size: 1.5rem;
+            animation: floatSparkle 3s ease-in-out infinite;
+            opacity: 0.8;
         }
 
-        @keyframes fireworkExplode {
-            0% {
-                transform: scale(0);
+        .floating-sparkle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+        .floating-sparkle:nth-child(2) { left: 80%; top: 10%; animation-delay: 0.5s; }
+        .floating-sparkle:nth-child(3) { left: 30%; top: 60%; animation-delay: 1s; }
+        .floating-sparkle:nth-child(4) { left: 70%; top: 80%; animation-delay: 1.5s; }
+        .floating-sparkle:nth-child(5) { left: 50%; top: 40%; animation-delay: 2s; }
+        .floating-sparkle:nth-child(6) { left: 20%; top: 70%; animation-delay: 2.5s; }
+
+        @keyframes floatSparkle {
+            0%, 100% { 
+                transform: translateY(0px) scale(1) rotate(0deg);
+                opacity: 0.6;
+            }
+            25% { 
+                transform: translateY(-20px) scale(1.2) rotate(90deg);
                 opacity: 1;
             }
-            50% {
-                transform: scale(1);
+            50% { 
+                transform: translateY(-10px) scale(0.8) rotate(180deg);
                 opacity: 0.8;
             }
-            100% {
-                transform: scale(3);
-                opacity: 0;
+            75% { 
+                transform: translateY(-30px) scale(1.1) rotate(270deg);
+                opacity: 1;
             }
         }
 
@@ -685,13 +705,13 @@
         </div>
 
         <div id="celebration" class="celebration">
-            <div class="fireworks">
-                <div class="firework" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
-                <div class="firework" style="top: 30%; left: 80%; animation-delay: 0.5s;"></div>
-                <div class="firework" style="top: 60%; left: 20%; animation-delay: 1s;"></div>
-                <div class="firework" style="top: 70%; left: 70%; animation-delay: 1.5s;"></div>
-                <div class="firework" style="top: 40%; left: 90%; animation-delay: 2s;"></div>
-                <div class="firework" style="top: 80%; left: 15%; animation-delay: 2.5s;"></div>
+            <div class="celebration-sparkles">
+                <div class="floating-sparkle">✨</div>
+                <div class="floating-sparkle">⭐</div>
+                <div class="floating-sparkle">💫</div>
+                <div class="floating-sparkle">🌟</div>
+                <div class="floating-sparkle">✨</div>
+                <div class="floating-sparkle">⭐</div>
             </div>
             
             <h2>Yay! 🎉</h2>
