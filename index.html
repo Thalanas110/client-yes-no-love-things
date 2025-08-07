@@ -458,6 +458,32 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
+        .poem-container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .poem-text {
+            color: white;
+            font-size: 1.1rem;
+            line-height: 1.4;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            font-style: italic;
+        }
+
+        .btn-poem {
+            background: linear-gradient(45deg, #e91e63, #9c27b0);
+        }
+
         @keyframes sparkleRain {
             0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
             50% { opacity: 1; transform: translateX(-50%) translateY(0px); }
@@ -545,6 +571,12 @@
             
             <p>I love you too! 💕</p>
             
+            <div class="poem-container">
+                <div class="poem-text" id="poemText">
+                    Click "Generate Poem" for a sweet surprise! 💝
+                </div>
+            </div>
+            
             <div class="love-stats">
                 <div class="stat-card">
                     <div class="stat-number" id="attempts">0</div>
@@ -558,6 +590,7 @@
             
             <div class="action-buttons">
                 <button class="celebration-btn btn-share" onclick="shareLove()">Share Love 💌</button>
+                <button class="celebration-btn btn-poem" onclick="generatePoem()">Generate Poem 📝</button>
                 <button class="celebration-btn btn-again" onclick="resetGame()">Play Again 🔄</button>
                 <button class="celebration-btn btn-surprise" onclick="surprise()">Surprise Me! ✨</button>
             </div>
@@ -597,7 +630,7 @@
             yesButtonScale += 0.1;
             yesBtn.style.transform = `scale(${yesButtonScale})`;
             
-            // Change text with more variety
+            // Change text with more variety - RANDOMLY!
             const messages = [
                 "No? 🥺",
                 "Are you sure? 😢",
@@ -613,14 +646,10 @@
                 "Just say yes! 💕"
             ];
             
-            if (clickCount < messages.length) {
-                noBtn.textContent = messages[clickCount];
-                clickCount++;
-            } else {
-                // Cycle through messages if they keep hovering
-                noBtn.textContent = messages[clickCount % messages.length];
-                clickCount++;
-            }
+            // Pick a random message each time!
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            noBtn.textContent = randomMessage;
+            clickCount++;
         }
 
         function handleYes() {
@@ -699,12 +728,37 @@
             randomSurprise();
         }
 
+        function generatePoem() {
+            const poems = [
+                "Roses are red 🌹<br>Violets are blue 💙<br>You clicked yes<br>I love you too! 💕",
+                "Hearts that beat 💓<br>In perfect time ⏰<br>Forever yours<br>Forever mine 💖",
+                "Love so sweet 🍯<br>Like morning dew ☀️<br>My heart smiles<br>Because of you 😊",
+                "Stars may fall ⭐<br>Oceans may dry 🌊<br>But my love<br>Will never die 💝",
+                "Simple words 📝<br>From heart so true ❤️<br>Three little words:<br>I love you! 💕"
+            ];
+            
+            const randomPoem = poems[Math.floor(Math.random() * poems.length)];
+            const poemElement = document.getElementById('poemText');
+            
+            // Add a little animation
+            poemElement.style.opacity = '0';
+            poemElement.style.transform = 'scale(0.8)';
+            
+            setTimeout(() => {
+                poemElement.innerHTML = randomPoem;
+                poemElement.style.opacity = '1';
+                poemElement.style.transform = 'scale(1)';
+                poemElement.style.transition = 'all 0.5s ease';
+            }, 200);
+        }
+
         function resetGame() {
             clickCount = 0;
             yesButtonScale = 1;
             
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.querySelector('.yes-btn');
+            const poemElement = document.getElementById('poemText');
             
             // Reset No button
             noBtn.style.position = 'static';
@@ -712,6 +766,10 @@
             
             // Reset Yes button size
             yesBtn.style.transform = 'scale(1)';
+            
+            // Reset poem
+            poemElement.innerHTML = 'Click "Generate Poem" for a sweet surprise! 💝';
+            poemElement.style.transition = '';
             
             document.getElementById('main-content').style.display = 'block';
             document.getElementById('celebration').style.display = 'none';
