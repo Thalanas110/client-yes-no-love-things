@@ -40,6 +40,7 @@
             /* Reduce some intensive animations on mobile */
             .celebration::after {
                 animation: none;
+                display: none; /* Hide the firework background pattern completely */
             }
         }
 
@@ -390,6 +391,12 @@
             top: 0;
             left: 0;
             pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .fireworks {
+                display: none; /* Hide fireworks on mobile to fix scrolling */
+            }
         }
 
         .firework {
