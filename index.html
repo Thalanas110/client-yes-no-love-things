@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Do you love me? 💕</title>
+    <title>hehehe💕</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -15,7 +15,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden; /* Only hide horizontal scroll */
+            overflow-x: hidden;
         }
 
         /* Mobile optimizations */
@@ -32,19 +32,19 @@
                 min-height: auto;
             }
             
-            /* Hide floating hearts on mobile to reduce performance issues */
+            /* Removed the floating hearts on mobile due to possible performance issue with Pakistani devices */
             .floating-hearts {
                 display: none;
             }
             
-            /* Reduce some intensive animations on mobile */
+            /* Reduced animations */
             .celebration::after {
                 animation: none;
-                display: none; /* Hide the firework background pattern completely */
+                display: none;
             }
         }
 
-        /* Floating hearts background */
+        /* main floating hearts */
         .floating-hearts {
             position: fixed;
             top: 0;
@@ -236,7 +236,7 @@
             .yes-btn {
                 position: relative !important;
                 z-index: 999 !important;
-                order: -1; /* Ensure Yes button stays at top */
+                order: -1;
             }
         }
 
@@ -260,7 +260,7 @@
                 font-size: 1.4rem;
                 min-width: 200px;
                 min-height: 60px;
-                touch-action: manipulation; /* Improve touch responsiveness */
+                touch-action: manipulation;
             }
         }
 
@@ -305,7 +305,6 @@
             box-shadow: 0 6px 20px rgba(66, 165, 245, 0.6);
         }
 
-        /* Fix mobile touch states */
         @media (max-width: 768px) {
             .no-btn:active,
             .no-btn:focus {
@@ -329,15 +328,15 @@
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            overflow-y: auto; /* Allow scrolling within celebration */
-            max-height: 90vh; /* Limit height on mobile */
+            overflow-y: auto;
+            max-height: 90vh;
         }
 
         @media (max-width: 768px) {
             .celebration {
                 padding: 20px;
-                max-height: none; /* Remove height limit on mobile */
-                overflow-y: visible; /* Make sure content is accessible */
+                max-height: none;
+                overflow-y: visible;
             }
             
             .celebration h2 {
@@ -673,7 +672,7 @@
     </style>
 </head>
 <body>
-    <!-- Floating hearts background -->
+    <!-- the hearts -->
     <div class="floating-hearts">
         <div class="heart">💖</div>
         <div class="heart">💕</div>
@@ -687,7 +686,7 @@
     </div>
 
     <div class="container">
-        <!-- Sparkles around container -->
+        <!-- container sparkling -->
         <div class="sparkle" style="top: 10px; left: 20px; animation-delay: 0s;">✨</div>
         <div class="sparkle" style="top: 30px; right: 30px; animation-delay: 0.5s;">⭐</div>
         <div class="sparkle" style="bottom: 40px; left: 40px; animation-delay: 1s;">✨</div>
@@ -697,7 +696,7 @@
 
         <div id="main-content">
             <div class="emoji">💕</div>
-            <h1 class="question">Do you love me?</h1>
+            <h1 class="question">Do you love me, duckoi?</h1>
             <div class="buttons">
                 <button class="btn yes-btn" onclick="handleYes()">Yes! 💖</button>
                 <button class="btn no-btn" id="noBtn" ontouchstart="moveNoButton()" onmouseover="moveNoButton()">No</button>
@@ -762,7 +761,7 @@
             // Clear any stuck mobile states
             noBtn.blur();
             
-            // Button size - use actual computed sizes on mobile
+            // mobile button sizes
             const isMobile = window.innerWidth <= 768;
             const btnWidth = isMobile ? 200 : 120;
             const btnHeight = isMobile ? 60 : 50;
@@ -770,31 +769,29 @@
             let randomX, randomY;
             
             if (isMobile) {
-                // On mobile, keep Yes button stable by ensuring it stays in place
-                // Position No button absolutely within viewport but avoid Yes button area
                 const yesRect = yesBtn.getBoundingClientRect();
                 
-                // Define safe zones for No button on mobile
+                // mobile button safe spaces
                 const safeZones = [
-                    { // Top area
+                    { // at top
                         minX: 20,
                         maxX: window.innerWidth - btnWidth - 20,
                         minY: 20,
                         maxY: Math.max(100, yesRect.top - btnHeight - 30)
                     },
-                    { // Bottom area 
+                    { // at bottom
                         minX: 20,
                         maxX: window.innerWidth - btnWidth - 20,
                         minY: yesRect.bottom + 30,
                         maxY: window.innerHeight - btnHeight - 80
                     },
-                    { // Left side (if there's space)
+                    { // left
                         minX: 20,
                         maxX: Math.max(50, yesRect.left - btnWidth - 30),
                         minY: yesRect.top,
                         maxY: yesRect.bottom
                     },
-                    { // Right side (if there's space)
+                    { // right
                         minX: yesRect.right + 30,
                         maxX: window.innerWidth - btnWidth - 20,
                         minY: yesRect.top,
@@ -802,7 +799,7 @@
                     }
                 ];
                 
-                // Filter valid safe zones and pick one randomly
+                // random filtration
                 const validZones = safeZones.filter(zone => 
                     zone.maxX > zone.minX && zone.maxY > zone.minY
                 );
@@ -811,14 +808,16 @@
                     const selectedZone = validZones[Math.floor(Math.random() * validZones.length)];
                     randomX = selectedZone.minX + Math.random() * (selectedZone.maxX - selectedZone.minX);
                     randomY = selectedZone.minY + Math.random() * (selectedZone.maxY - selectedZone.minY);
-                } else {
-                    // Fallback: position at bottom of screen
+                } 
+                else {
+                    // fallback position q
                     randomX = 20 + Math.random() * (window.innerWidth - btnWidth - 40);
                     randomY = window.innerHeight - btnHeight - 60;
                 }
                 
-            } else {
-                // Desktop positioning (unchanged)
+            } 
+            else {
+                // desktop positioning
                 const margin = 50;
                 const minX = margin;
                 const maxX = window.innerWidth - btnWidth - margin;
@@ -829,21 +828,24 @@
                 randomY = minY + Math.random() * (maxY - minY);
             }
             
-            // Apply position
             noBtn.style.position = 'fixed';
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
             noBtn.style.zIndex = '1000';
             
-            // Make Yes button bigger each time (less on mobile)
+            /* This function is called on both touchstart and mouseover.
+            This way, it works on both mobile and desktop devices.
+            The yes button will increase in size each time the no button is clicked or hovered upon, depending on the device.
+            */
             if (isMobile) {
-                yesButtonScale += 0.03; // Even smaller increments on mobile
-            } else {
+                yesButtonScale += 0.05; // Smaller incrementation on mobile
+            } 
+            else {
                 yesButtonScale += 0.1;
             }
             yesBtn.style.transform = `scale(${yesButtonScale})`;
             
-            // Change text with more variety - RANDOMLY!
+            // No button messages - randomly picked
             const messages = [
                 "No? 🥺",
                 "Are you sure? 😢",
@@ -856,23 +858,42 @@
                 "Last chance! ⚠️",
                 "You're breaking my heart! 💔",
                 "Seriously? 😤",
-                "Just say yes! 💕"
+                "Just say yes! 💕",
+                "Why not? 😔",
+                "I might cry... 😭",
+                "You don't love me? 😢",
+                "I thought you cared! 😞",
+                "You're making me sad! 😩",
+                "How could you? 😭",
+                "I was so happy... 😔",
+                "Don't ignore my feelings! 🥺",
+                "I need your love! 💖",
+                "Please don't say no... 😢",
+                "My heart hurts! 💔",
+                "I just want a yes! 🥹",
+                "You're so cold! 🥶",
+                "I can't believe this! 😱",
+                "I'll be sad all day! 😭",
+                "No hugs for you! 😤",
+                "I'll sulk forever! 😒",
+                "You're missing out! 😏",
+                "I guess I'll go eat chocolate... 🍫"
             ];
             
-            // Pick a random message each time!
+            // this function selects random messagges from the array abbove
             const randomMessage = messages[Math.floor(Math.random() * messages.length)];
             noBtn.textContent = randomMessage;
             clickCount++;
         }
 
         function handleYes() {
-            // Update attempts counter
+            // attempt counter
             document.getElementById('attempts').textContent = clickCount;
             
             document.getElementById('main-content').style.display = 'none';
             document.getElementById('celebration').style.display = 'block';
             
-            // Add some celebration effects
+            // celebratory effects
             setTimeout(() => {
                 createHeartExplosion();
             }, 500);
@@ -905,8 +926,9 @@
                     text: `I just got someone to say they love me ${clickCount} times! 💕`,
                     url: window.location.href
                 });
-            } else {
-                // Fallback for browsers that don't support Web Share API
+            } 
+            else {
+                // webshare api fallback, for those who don't support it
                 const text = `I just got someone to say they love me ${clickCount} times! 💕 ${window.location.href}`;
                 navigator.clipboard.writeText(text).then(() => {
                     alert('Love message copied to clipboard! 💕');
@@ -915,6 +937,7 @@
         }
 
         function surprise() {
+            // surprises
             const surprises = [
                 () => {
                     document.body.style.animation = 'shake 0.5s ease-in-out 3';
@@ -941,6 +964,7 @@
         }
 
         function generatePoem() {
+            // the poems included, needs some fixing lolz too cringe asf
             const poems = [
                 "Roses are red 🌹<br>Violets are blue 💙<br>You clicked yes<br>I love you too! 💕",
                 "Hearts that beat 💓<br>In perfect time ⏰<br>Forever yours<br>Forever mine 💖",
@@ -952,7 +976,7 @@
             const randomPoem = poems[Math.floor(Math.random() * poems.length)];
             const poemElement = document.getElementById('poemText');
             
-            // Add a little animation
+            // small animatons
             poemElement.style.opacity = '0';
             poemElement.style.transform = 'scale(0.8)';
             
@@ -972,14 +996,14 @@
             const yesBtn = document.querySelector('.yes-btn');
             const poemElement = document.getElementById('poemText');
             
-            // Reset No button
+            // reset the no button
             noBtn.style.position = 'static';
             noBtn.textContent = 'No';
             
-            // Reset Yes button size
+            // reset the yes button
             yesBtn.style.transform = 'scale(1)';
             
-            // Reset poem
+            // change the poems
             poemElement.innerHTML = 'Click "Generate Poem" for a sweet surprise! 💝';
             poemElement.style.transition = '';
             
