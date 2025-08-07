@@ -15,7 +15,32 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden; /* Only hide horizontal scroll */
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                align-items: flex-start;
+                padding-top: 20px;
+                overflow-y: auto;
+            }
+            
+            .container {
+                margin: 0 auto;
+                min-height: auto;
+            }
+            
+            /* Hide floating hearts on mobile to reduce performance issues */
+            .floating-hearts {
+                display: none;
+            }
+            
+            /* Reduce some intensive animations on mobile */
+            .celebration::after {
+                animation: none;
+            }
         }
 
         /* Floating hearts background */
@@ -119,6 +144,18 @@
             position: relative;
         }
 
+        @media (max-width: 768px) {
+            .question {
+                font-size: 2rem;
+                margin-bottom: 30px;
+            }
+            
+            .question::before,
+            .question::after {
+                display: none; /* Hide sparkles on mobile for space */
+            }
+        }
+
         .question::before,
         .question::after {
             content: '✨';
@@ -185,6 +222,21 @@
             justify-content: center;
             align-items: center;
             min-height: 80px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .buttons {
+                flex-direction: column;
+                gap: 15px;
+                min-height: auto;
+            }
+            
+            .yes-btn {
+                position: relative !important;
+                z-index: 999 !important;
+                order: -1; /* Ensure Yes button stays at top */
+            }
         }
 
         .btn {
@@ -197,6 +249,18 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            min-width: 120px;
+            min-height: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .btn {
+                padding: 18px 40px;
+                font-size: 1.4rem;
+                min-width: 200px;
+                min-height: 60px;
+                touch-action: manipulation; /* Improve touch responsiveness */
+            }
         }
 
         .btn::before {
@@ -250,7 +314,31 @@
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            overflow: hidden;
+            overflow-y: auto; /* Allow scrolling within celebration */
+            max-height: 90vh; /* Limit height on mobile */
+        }
+
+        @media (max-width: 768px) {
+            .celebration {
+                padding: 20px;
+                max-height: none; /* Remove height limit on mobile */
+                overflow-y: visible; /* Make sure content is accessible */
+            }
+            
+            .celebration h2 {
+                font-size: 3rem;
+                margin-bottom: 15px;
+            }
+            
+            .celebration .hearts {
+                font-size: 4rem;
+                margin: 15px 0;
+            }
+            
+            .celebration p {
+                font-size: 1.5rem;
+                margin: 15px 0;
+            }
         }
 
         @keyframes gradientShift {
@@ -398,6 +486,14 @@
             margin: 25px 0;
         }
 
+        @media (max-width: 768px) {
+            .love-stats {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                margin: 20px 0;
+            }
+        }
+
         .stat-card {
             background: rgba(255, 255, 255, 0.2);
             padding: 15px;
@@ -427,6 +523,14 @@
             flex-wrap: wrap;
         }
 
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+                gap: 12px;
+                margin-top: 20px;
+            }
+        }
+
         .celebration-btn {
             padding: 12px 25px;
             border: none;
@@ -439,6 +543,15 @@
             border: 2px solid rgba(255, 255, 255, 0.3);
             color: white;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .celebration-btn {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+                min-height: 50px;
+                touch-action: manipulation;
+            }
         }
 
         .btn-share {
@@ -605,20 +718,72 @@
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.querySelector('.yes-btn');
             
-            // Button size
-            const btnWidth = 120;
-            const btnHeight = 60;
+            // Button size - use actual computed sizes on mobile
+            const isMobile = window.innerWidth <= 768;
+            const btnWidth = isMobile ? 200 : 120;
+            const btnHeight = isMobile ? 60 : 50;
             
-            // Much larger bounding box - moves around most of the screen
-            const margin = 50;
-            const minX = margin;
-            const maxX = window.innerWidth - btnWidth - margin;
-            const minY = margin;
-            const maxY = window.innerHeight - btnHeight - margin;
+            let randomX, randomY;
             
-            // Random position anywhere on screen
-            const randomX = minX + Math.random() * (maxX - minX);
-            const randomY = minY + Math.random() * (maxY - minY);
+            if (isMobile) {
+                // On mobile, keep Yes button stable by ensuring it stays in place
+                // Position No button absolutely within viewport but avoid Yes button area
+                const yesRect = yesBtn.getBoundingClientRect();
+                
+                // Define safe zones for No button on mobile
+                const safeZones = [
+                    { // Top area
+                        minX: 20,
+                        maxX: window.innerWidth - btnWidth - 20,
+                        minY: 20,
+                        maxY: Math.max(100, yesRect.top - btnHeight - 30)
+                    },
+                    { // Bottom area 
+                        minX: 20,
+                        maxX: window.innerWidth - btnWidth - 20,
+                        minY: yesRect.bottom + 30,
+                        maxY: window.innerHeight - btnHeight - 80
+                    },
+                    { // Left side (if there's space)
+                        minX: 20,
+                        maxX: Math.max(50, yesRect.left - btnWidth - 30),
+                        minY: yesRect.top,
+                        maxY: yesRect.bottom
+                    },
+                    { // Right side (if there's space)
+                        minX: yesRect.right + 30,
+                        maxX: window.innerWidth - btnWidth - 20,
+                        minY: yesRect.top,
+                        maxY: yesRect.bottom
+                    }
+                ];
+                
+                // Filter valid safe zones and pick one randomly
+                const validZones = safeZones.filter(zone => 
+                    zone.maxX > zone.minX && zone.maxY > zone.minY
+                );
+                
+                if (validZones.length > 0) {
+                    const selectedZone = validZones[Math.floor(Math.random() * validZones.length)];
+                    randomX = selectedZone.minX + Math.random() * (selectedZone.maxX - selectedZone.minX);
+                    randomY = selectedZone.minY + Math.random() * (selectedZone.maxY - selectedZone.minY);
+                } else {
+                    // Fallback: position at bottom of screen
+                    randomX = 20 + Math.random() * (window.innerWidth - btnWidth - 40);
+                    randomY = window.innerHeight - btnHeight - 60;
+                }
+                
+            } else {
+                // Desktop positioning (unchanged)
+                const margin = 50;
+                const minX = margin;
+                const maxX = window.innerWidth - btnWidth - margin;
+                const minY = margin;
+                const maxY = window.innerHeight - btnHeight - margin;
+                
+                randomX = minX + Math.random() * (maxX - minX);
+                randomY = minY + Math.random() * (maxY - minY);
+            }
             
             // Apply position
             noBtn.style.position = 'fixed';
@@ -626,8 +791,12 @@
             noBtn.style.top = randomY + 'px';
             noBtn.style.zIndex = '1000';
             
-            // Make Yes button bigger each time
-            yesButtonScale += 0.1;
+            // Make Yes button bigger each time (less on mobile)
+            if (isMobile) {
+                yesButtonScale += 0.03; // Even smaller increments on mobile
+            } else {
+                yesButtonScale += 0.1;
+            }
             yesBtn.style.transform = `scale(${yesButtonScale})`;
             
             // Change text with more variety - RANDOMLY!
@@ -666,7 +835,6 @@
         }
 
         function createHeartExplosion() {
-            const container = document.querySelector('.container');
             for (let i = 0; i < 20; i++) {
                 const heart = document.createElement('div');
                 heart.textContent = '💖';
